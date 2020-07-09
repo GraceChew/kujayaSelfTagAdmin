@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Add Data</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+            
+            
+            <!-- MATERIAL DESIGN ICONIC FONT -->
+        <link rel="stylesheet" href="design_files/design_files/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+                
+                <!-- STYLE CSS -->
+        <link rel="stylesheet" href="design_files/design_files/css/style.css">
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+    </head>
+    
+    <body>
+
+        <nav class="navbar navbar-expand-lg bg-dark text-white">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a class="nav-link" style="color: whitesmoke;text-decoration-style: wavy;" href="#">
+                            Attendance Report
+                        </a> 
+                    </li>
+                    <li>
+                        <a class="nav-link" style="color: whitesmoke;text-decoration-style: wavy;" href="#">
+                            <span style="color:whitesmoke">Candidate History</span>
+                        </a> 
+                    </li>
+                    <li class="active">
+                        <a class="nav-link" style="color: whitesmoke;text-decoration-style: wavy;" href="addCandidate.html">
+                            <span style="color:whitesmoke">Add Candidate</span>
+                        </a> 
+                    </li>
+                    <li>
+                        <button id="btn-logout" class="nav-link bg-dark" style="color: whitesmoke;text-decoration-style: wavy;">
+                            Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="wrapper" style="background-image: url('design_files/design_files/images/registerback.jpg');">
+            <div class="inner">
+
+                <div class="image-holder">
+                    <img src="design_files/design_files/images/registration-form-1.jpg" />
+                </div>
+
+                <form id="candidateForm" action="">
+                    <h3>Update Candidate</h3>
+                    <div class="form-wrapper">
+                        <input id="" type="text" placeholder="Candidate name" class="form-control" />
+                        <i class="zmdi zmdi-face"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input id="candidateIC" type="text" placeholder="IC" class="form-control" />
+                        <i class="zmdi zmdi-layers"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input id="candidateAgent" type="text" placeholder="Agent" class="form-control" />
+                        <i class="zmdi zmdi-account-box"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input id="candidateCompany" type="text" placeholder="Conpany" class="form-control" />
+                        <i class="zmdi zmdi-layers"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input id="candidatePhone" type="text" placeholder="Phone" class="form-control" />
+                        <i class="zmdi zmdi-phone"></i>
+                    </div>
+                    <div class="form-wrapper">
+                        <input id="candidateTransport" type="text" placeholder="Transport" class="form-control" />
+                        <i class="zmdi zmdi-bus"></i>
+                    </div>
+                    <div class="form-group container-login100-form-btn">
+                        <button id="btn-update" type="button">
+                            Register
+                            <i class="zmdi zmdi-arrow-right"></i>
+                        </button>
+                    </div>
+        
+                    <div class="w-full text-center" style="margin-top: 49%; font-size: 15px;;">
+                        <a href="signin.html" class="text-dark">Already have and account?</a>"
+                    </div>
+                </form>
+            </div>
+        </div> 
+
+        <script src="js/index.js"></script>
+        <script>
+
+            
+            firebase.auth().onAuthStateChanged(function(user){
+                if(!user){
+                    window.location.href = "signin.html";
+                }
+                else{
+                    var userID = firebase.auth().currentUser.uid;
+                    // firebase.database().ref('candidates/' + userID).once('value').then(function(snapshot){
+                    //     if(snapshot.val())
+                    //     {
+
+                    //     }
+                    //     else
+                    //     {
+
+                    //     }
+                    // });
+                }
+            });
+        </script>
+    </body>
+</html>

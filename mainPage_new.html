@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <link rel="icon" type="image/png" href="images/kujaya.ico">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/light-bootstrap-dashboard.css?v=2.0.0" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Control Center for pie chart -->
+    <script src="js/plugins/chartist.min.js"></script>
+    <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
+    <script src="js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+    <!-- date picker -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery.datetimepicker.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.4/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="js/jquery.datatimepicker.full.min.js"></script>
+    
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar" data-image="images/sidebar-4.jpg">
+            <div class="sidebar-wrapper">
+                <div class="logo">
+                    <img src="images/kujaya.png" alt="kujaya logo" style="width:20%" />
+                    Kujaya Self Tag
+                </div>
+                <ul class="nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="history.html">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Candidate history</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            <i class="nc-icon nc-cloud-upload-94"></i>
+                            <p>Bulk Upload</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a id="Logout" class="nav-link" href="javascript: isLogout()">
+                            <i class="nc-icon nc-simple-remove"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+
+                    <!--<li class="nav-item active active-pro">
+                    <a class="nav-link active" href="upgrade.html">
+                        <i class="nc-icon nc-alien-33"></i>
+                        <p>Upgrade to PRO</p>
+                    </a>
+                </li>-->
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#pablo"> Dashboard </a>
+                </div>
+            </nav>
+
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Attendance Daily Report</h4>
+                                    <p class="card-category">Logic: To get absent candidate, compare clock in data with master candidate list </p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-1 pr-0 pt-2 card-category">Start:</div>
+                                        <div class="col-4 pl-0"><input type="text" id="picker1" class="form-control"></div>
+                                        <div class="col-1 pr-0 pl-1 pt-2 card-category">End:</div>
+                                        <div class="col-4 pl-0"><input type="text" id="picker2" class="form-control"></div>
+                                        <div class="col-2"><button id="btn-refresh" type="button" class="btn btn-outline-primary">Refresh</button></div>
+                                    </div> 
+                                     
+                                    <div id="chartPreferences" class="ct-chart"></div>
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> Attend
+                                        <i class="fa fa-circle text-danger"></i> Absence
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- <h2>Attendance Report</h2>
+                <p>
+                    <ul id="clockIn">
+
+                    </ul>
+                </p> -->
+
+        </div>
+
+    </div>
+
+
+    <script src="js/index.js"></script>
+    <script>
+        
+        firebase.auth().onAuthStateChanged(function(user){
+            if(!user){
+                window.location.href = "signin.html";
+            }
+        });
+
+        $('#picker1').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            value: new Date(),
+            weeks: true,
+            onShow: function(ct){
+                this.setOptions({
+                    maxDate : $('#picker2').val() ? $('#picker2').val() : false
+                })
+            }
+        });
+
+        $('#picker2').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            value: new Date(),
+            weeks: true,
+            onShow: function(ct){
+                this.setOptions({
+                    minDate : $('#picker1').val() ? $('#picker1').val() : false
+                })
+            }
+        });
+
+       
+
+        var masterListSize;
+        var attendCandidate;
+        var absenceCandidate;
+        var masterList = firebase.database().ref().child("candidates").orderByChild("candidateIc");
+        masterList.on("value", function(snapshot){
+            masterListSize = snapshot.numChildren();
+        });
+
+        $("#btn-refresh").click(function(){        
+            var startDate =  document.getElementById("picker1").value;
+            var endDate =  document.getElementById("picker2").value;
+            var clockIndata = firebase.database().ref().child("clockIn").orderByChild("date").startAt(startDate).endAt(endDate);
+            clockIndata.on("value", function(snapshot){
+                console.log(snapshot.val());
+                attendCandidate = snapshot.numChildren();
+                absenceCandidate = masterListSize - attendCandidate;
+
+                var dataPreferences = {
+                    series: [
+                        [attendCandidate, absenceCandidate]
+                    ]
+                };
+
+                var optionsPreferences = {
+                    donut: true,
+                    donutWidth: 40,
+                    startAngle: 0,
+                    total: 100,
+                    showLabel: false,
+                    axisX: {
+                        showGrid: false
+                    }
+                };
+
+                var labelAttend = attendCandidate + '% Attend';
+                var labelAbsence = absenceCandidate + '% Absence';
+                Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
+
+                Chartist.Pie('#chartPreferences', {
+                    labels: [labelAttend, labelAbsence],
+                    series: [attendCandidate, absenceCandidate]
+                });
+
+            });//end of clockIndata
+        });
+
+        
+
+       
+
+        
+
+        // var dbClockIn = firebase.database().ref().child("clockIn").orderByChild("date");
+        // dbClockIn.on("value", function(snapshot) {
+        //         console.log(snapshot.val());
+        //         var clockIn = snapshot.val();
+        //         var keys = Object.keys(clockIn);
+        //         console.log(keys);
+
+        //         for(var i = 0; i < keys.length; i++){
+        //             var k = keys[i];
+        //             var agent = clockIn[k].agent;
+        //             var company = clockIn[k].company;
+        //             var ic = clockIn[k].ic;
+        //             var location = clockIn[k].location;
+        //             var name = clockIn[k].name;
+        //             //console.log(agent, name, ic, company);
+        //             // var li = document.createElement('li', agent + ";" + name + ";" + ic + company);
+        //             // document.getElementById('candidateList').appendChild(li);
+        //             $('#clockIn').append('<li>' + agent + ";" + name + ";" + ic  + ";" + company + ";" + location + '</li>');
+        //         }
+
+        //         }, function (error) {
+        //         console.log("Error: " + error.code);
+        //     });
+
+            
+    </script>
+
+</body>
+
+</html>
