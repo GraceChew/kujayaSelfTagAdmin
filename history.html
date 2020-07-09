@@ -24,6 +24,20 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="js/jquery.datatimepicker.full.min.js"></script>
     
+    <!-- table -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.css"/>
+    <link href="https://unpkg.com/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.css">
 
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
@@ -94,72 +108,19 @@
                                     <h4 class="card-title">History Report</h4>
                                     <p class="card-category">You can see the change history made by agents</p>
                                 </div>
-                                <div class="card-body table-full-width table-responsive">
-                                    <table class="table table-hover table-striped">
+                                <div class="card-body table-full-width table-responsive ml-1">
+                                    <table id="tableHistory" class="table table-hover table-striped">
                                         <thead>
-                                            <th>Change By</th>
-                                            <th>Candidate IC</th>
-                                            <th>Change Item</th>
-                                            <th>Value From</th>
-                                            <th>Value To</th>
-                                            <th>Date</th>
-                                            <th>Time</th>
+                                            <th data-field="id" data-sortable="true">Change By</th>
+                                            <th data-field="ic" data-sortable="true">Candidate IC</th>
+                                            <th data-field="item" data-sortable="true">Change Item</th>
+                                            <th data-field="from" data-sortable="true">Value From</th>
+                                            <th data-field="to" data-sortable="true">Value To</th>
+                                            <th data-field="date" data-sortable="true">Date</th>
+                                            <th data-field="time" data-sortable="true">Time</th>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Agent Lin</td>
-                                                <td>990404126503</td>
-                                                <td>Add Candidate</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>2020-07-06</td>
-                                                <td>16:23:21</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Lin</td>
-                                                <td>990404126503</td>
-                                                <td>TRANSPORT TYPE</td>
-                                                <td>BY BUS</td>
-                                                <td>OWN TRANSPORT</td>
-                                                <td>2020-07-06</td>
-                                                <td>20:23:21</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Asrul</td>
-                                                <td>990404126503</td>
-                                                <td>Delete Candidate</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>2020-07-07</td>
-                                                <td>16:23:21</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Kamal</td>
-                                                <td>980320036130</td>
-                                                <td>Add Candidate</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>2020-07-08</td>
-                                                <td>16:23:21</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Kamal</td>
-                                                <td>980320036130</td>
-                                                <td>TRANSPORT TYPE</td>
-                                                <td>BY BUS</td>
-                                                <td>OWN TRANSPORT</td>
-                                                <td>2020-07-08</td>
-                                                <td>20:23:21</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Agent Lin</td>
-                                                <td>990404126503</td>
-                                                <td>Add Candidate</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>2020-07-06</td>
-                                                <td>16:23:21</td>
-                                            </tr>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -176,6 +137,22 @@
     </div>
 
 
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.js"></script>
     <script src="js/index.js"></script>
     <script>
         
@@ -184,6 +161,101 @@
                 window.location.href = "signin.html";
             }
         });
+
+        var dataset;
+        var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate");
+        var dataset = [["agnet", "8888888", "new candidate", "-", "-", "2020-07-07", "14:00:00"]];
+        dataset.push(["agnet", "8888888", "new candidate", "-", "-", "2020-07-07", "14:00:00"]);
+        dataset.push(["agnet", "8888888", "new candidate", "-", "-", "2020-07-07", "14:00:00"]);
+        dataset.push(["agnet", "8888888", "new candidate", "-", "-", "2020-07-07", "14:00:00"]);
+
+        const test = [];
+        var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate");
+        dbhistory.on("value", function(snapshot) {
+                //console.log(snapshot.val());
+                var history = snapshot.val();
+                var keys = Object.keys(history);
+                //console.log(keys);
+
+                for(var i = 0; i < keys.length; i++){
+                    var k = keys[i];                
+                    test.push([history[k].changeBy, history[k].candidateIC, history[k].changeItem, history[k].valueFrom, history[k].valueTo, history[k].changeDate, history[k].changeTime]);                    
+                }
+                
+                $(document).ready(function () {
+                    $('#tableHistory').DataTable({
+                        //'searching': false,
+                        //'paging': false,
+                        //'ordering': false,
+                        //'info': false
+                        'data': test,
+                        columns: [
+                            { title: "id" },
+                            { title: "ic" },
+                            { title: "item" },
+                            { title: "from" },
+                            { title: "to" },
+                            { title: "date" },
+                            { title: "time" }
+                        ],
+                        'order': [[5, 'desc']],
+                    });
+
+                });
+
+                }, function (error) {
+                console.log("Error: " + error.code);
+            });
+
+            console.log(test.length);
+            for(var i = 0; i < test.length; i++) {
+                var cube = test[i];
+                for(var j = 0; j < cube.length; j++) {
+                    dataset.push(cube[i][j]);
+                }
+            }
+        
+       
+        
+     
+        // var table = document.getElementById("tableHistory").getElementsByTagName('tbody')[0];
+        // var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate");
+        // dbhistory.on("value", function(snapshot) {
+        //         //console.log(snapshot.val());
+        //         var history = snapshot.val();
+        //         var keys = Object.keys(history);
+        //         console.log(keys);
+
+        //         for(var i = 0; i < keys.length; i++){
+                
+        //             var row = table.insertRow();
+
+        //             var cell1 = row.insertCell(0);
+        //             var cell2 = row.insertCell(1);
+        //             var cell3 = row.insertCell(2);
+        //             var cell4 = row.insertCell(3);
+        //             var cell5 = row.insertCell(4);
+        //             var cell6 = row.insertCell(5);
+        //             var cell7 = row.insertCell(6);
+                    
+        //             var k = keys[i];
+        //             cell1.innerHTML = history[k].changeBy;
+        //             cell2.innerHTML = history[k].candidateIC;
+        //             cell3.innerHTML = history[k].changeItem;
+        //             cell4.innerHTML = history[k].valueFrom;
+        //             cell5.innerHTML = history[k].valueTo;
+        //             cell6.innerHTML = history[k].changeDate;
+        //             cell7.innerHTML = history[k].changeTime;
+
+        //             //console.log(agent, name, ic, company);
+        //             // var li = document.createElement('li', agent + ";" + name + ";" + ic + company);
+        //             // document.getElementById('candidateList').appendChild(li);
+        //             //$('#clockIn').append('<li>' + agent + ";" + name + ";" + ic  + ";" + company + ";" + location + '</li>');
+        //         }
+
+        //         }, function (error) {
+        //         console.log("Error: " + error.code);
+        //     });
             
     </script>
 
