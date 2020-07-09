@@ -183,6 +183,9 @@
                 attendCandidate = snapshot.numChildren();
                 absenceCandidate = masterListSize - attendCandidate;
 
+                if(attendCandidate == 0)
+                {   absenceCandidate = 100 ;}
+
                 var dataPreferences = {
                     series: [
                         [attendCandidate, absenceCandidate]
