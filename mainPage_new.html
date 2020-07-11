@@ -21,9 +21,26 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery.datetimepicker.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.4/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="js/jquery.datatimepicker.full.min.js"></script>
+    <script src="js/jquery.datatimepicker.full.min.js"></script> 
     
+     <!-- table -->
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.16.0/bootstrap-table.min.css"/>
+     <link href="https://unpkg.com/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" rel="stylesheet">
+ 
+     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+     <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.bootstrap4.min.css" rel="stylesheet">
+     <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
+     <link href="https://cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css" rel="stylesheet">
+ 
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css" rel="stylesheet">
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.css">
+
+    <!-- dropdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
@@ -48,6 +65,11 @@
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
+                        <ul class="ml-5">
+                            <li class="pt-1 pb-1"><a style="color: white; font-size: 14px;" href="#pieChart">Pie chart</a></li>
+                            <li class="pt-1 pb-1"><a style="color: white; font-size: 14px;" href="#absence">Absence List</a></li>
+                            <li class="pt-1 pb-1"><a style="color: white; font-size: 14px;" href="#attend">Attendance List</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a class="nav-link" href="history.html">
@@ -88,21 +110,34 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
+                        <div class="col-md-12">
+                            <div class="card" id="pieChart">
                                 <div class="card-header">
                                     <h4 class="card-title">Attendance Daily Report</h4>
                                     <p class="card-category">Logic: To get absent candidate, compare clock in data with master candidate list </p>
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-1 pr-0 pt-2 card-category">Start:</div>
+                                        <div class="col-2 pr-0 pt-2 card-category">Start:</div>
                                         <div class="col-4 pl-0"><input type="text" id="picker1" class="form-control"></div>
-                                        <div class="col-1 pr-0 pl-1 pt-2 card-category">End:</div>
-                                        <div class="col-4 pl-0"><input type="text" id="picker2" class="form-control"></div>
-                                        <div class="col-2"><button id="btn-refresh" type="button" class="btn btn-outline-primary">Refresh</button></div>
+                                        <div class="col-6"></div>
+                                        
                                     </div> 
-                                     
+                                    <div class="row">
+                                        <div class="col-2 pr-0 pt-2 card-category">End:</div>
+                                        <div class="col-4 pl-0 pt-1"><input type="text" id="picker2" class="form-control"></div>
+                                        <div class="col-6 pt-1"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-2 pr-0 pt-2 card-category">Company:</div>
+                                        <div class="col-4 pl-0 pt-2">    
+                                            <div class="input-group mb-3">
+                                                <select class="custom-select" id="companySelect">
+                                                </select>
+                                              </div>
+                                        </div>   
+                                        <div class="col-6 pt-1"><button id="btn-refresh" type="button" class="btn btn-outline-primary disabled">Loading...</button></div>
+                                    </div>
                                     <div id="chartPreferences" class="ct-chart"></div>
                                     <div class="legend">
                                         <i class="fa fa-circle text-info"></i> Attend
@@ -111,26 +146,83 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"></div>
                     </div>
-                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card" id="absence">
+                                <div class="card-header">
+                                    <h4 id="absenceTitle" class="card-title">Absence Name List</h4>
+                                    <p class="card-category">Name and phone of absence candidate </p>
+                                </div>
+                                <div class="card-body table-full-width table-responsive ml-1">
+                                    <table id="tableAbsence" class="table table-hover table-striped">
+                                        <thead>
+                                            <th data-field="name" data-sortable="true">Name</th>
+                                            <th data-field="ic" data-sortable="true">IC</th>
+                                            <th data-field="phone" data-sortable="true">Phone</th>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card" id="attend">
+                                <div class="card-header">
+                                    <h4 id="attendTitle" class="card-title">Attendance Records Details</h4>
+                                    <p class="card-category">Details from pie chart</p>
+                                </div>
+                                <div class="card-body table-full-width table-responsive ml-1">
+                                    <table id="tableDetailReport" class="table table-hover table-striped">
+                                        <thead>
+                                            <th data-field="name" data-sortable="true">Name</th>
+                                            <th data-field="ic" data-sortable="true">IC</th>
+                                            <th data-field="date" data-sortable="true">Clock In Date</th>
+                                            <th data-field="time" data-sortable="true">Time</th>
+                                            <th data-field="location" data-sortable="true">Location</th>
+                                            <th data-field="phone" data-sortable="true">Phone</th>
+                                            <th data-field="agent" data-sortable="true">Agent</th>
+                                            <th data-field="company" data-sortable="true">Company</th>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                    
             </div>
-
-            <!-- <h2>Attendance Report</h2>
-                <p>
-                    <ul id="clockIn">
-
-                    </ul>
-                </p> -->
-
         </div>
 
     </div>
 
 
+    <script src="https://unpkg.com/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.js"></script>
     <script src="js/index.js"></script>
     <script>
+        $('.dropdown-toggle').dropdown();
         
         firebase.auth().onAuthStateChanged(function(user){
             if(!user){
@@ -163,25 +255,104 @@
                 })
             }
         });
-
        
 
         var masterListSize;
         var attendCandidate;
         var absenceCandidate;
-        var masterList = firebase.database().ref().child("candidates").orderByChild("candidateIc");
-        masterList.on("value", function(snapshot){
+
+        //get company from active candidate master list
+        var masterCompanyList = firebase.database().ref().child("candidates").orderByChild("candidateStatus").equalTo("ACTIVE");
+        masterCompanyList.on("value", function(snapshot){
             masterListSize = snapshot.numChildren();
+            var masterCandidate = snapshot.val();
+            var keys = Object.keys(masterCandidate);
+            //var arrays = [];
+            var arraysAllCompany = [];
+            var arraysCandidateNameICPhone = [];
+            
+           for(var i = 0; i < keys.length; i++){
+                    var k = keys[i];
+                    arraysAllCompany.push(masterCandidate[k].candidateCompany);    
+                    // if(!arrays.includes(masterCandidate[k].candidateCompany)){
+                    //     arrays.push(masterCandidate[k].candidateCompany);                 
+                    // } 
+                    
+                    //Save candidate master list to local storage
+                    arraysCandidateNameICPhone.push([masterCandidate[k].candidateName, 
+                                                     masterCandidate[k].candidateIc, 
+                                                     masterCandidate[k].candidatePhone,
+                                                     masterCandidate[k].candidateCompany]);                   
+            }
+            //name local storage to masterCandidate
+            localStorage.setItem("masterCandidate", JSON.stringify(arraysCandidateNameICPhone));
+
+            //count the size of candidate based on different company
+            //put the size and company to drop down list
+            let count = 1;
+            let letters = [];
+            arraysAllCompany.sort();
+            for(let i = 0; i < arraysAllCompany.length; i++){
+                if(arraysAllCompany[i] === arraysAllCompany[i+1]){
+                    count++;
+                }
+                else{
+                    let value = `${arraysAllCompany[i]}${count}`;
+                    letters = [...letters, value];
+
+                    var x = document.getElementById("companySelect");
+                    var option = document.createElement("option");
+                    option.text = arraysAllCompany[i];
+                    option.value = count;
+                    x.add(option);  
+
+                    count=1;
+
+                    $("#btn-refresh").removeClass("disabled");
+                    document.getElementById("btn-refresh").innerText= "Refresh";
+                }
+            }
+            // console.log(arraysAllCompany);
+            // console.log(letters);
         });
 
-        $("#btn-refresh").click(function(){        
+        $("#btn-refresh").click(function(){  
+
+           
+
+            var dropdownValue = document.getElementById("companySelect");
+
             var startDate =  document.getElementById("picker1").value;
             var endDate =  document.getElementById("picker2").value;
             var clockIndata = firebase.database().ref().child("clockIn").orderByChild("date").startAt(startDate).endAt(endDate);
             clockIndata.on("value", function(snapshot){
-                console.log(snapshot.val());
-                attendCandidate = snapshot.numChildren();
+
+                //loop to get all the candidate name based on company (from dropdown list)
+                var arrayClockIn = [];
+                var arrayDetailReport = [];
+                var clockInFromFirebase = snapshot.val();
+                var keys = Object.keys(clockInFromFirebase);
+                for(var i = 0; i < keys.length; i++){
+                    var k = keys[i];
+                    if(clockInFromFirebase[k].company == dropdownValue.options[dropdownValue.selectedIndex].text){
+                        arrayClockIn.push(clockInFromFirebase[k].name);
+                        arrayDetailReport.push([clockInFromFirebase[k].name,
+                                                clockInFromFirebase[k].ic,
+                                                clockInFromFirebase[k].date,
+                                                clockInFromFirebase[k].time,
+                                                clockInFromFirebase[k].location,
+                                                clockInFromFirebase[k].phone,
+                                                clockInFromFirebase[k].agent,
+                                                clockInFromFirebase[k].company ]);
+                    }
+                }
+                
+                //pie chart setup start
+                attendCandidate = arrayClockIn.length;
                 absenceCandidate = masterListSize - attendCandidate;
+
+                attendCandidate = Math.round( (attendCandidate / masterListSize) * 100 );
+                absenceCandidate = Math.round((absenceCandidate / masterListSize) * 100);
 
                 if(attendCandidate == 0)
                 {   absenceCandidate = 100 ;}
@@ -211,9 +382,85 @@
                     labels: [labelAttend, labelAbsence],
                     series: [attendCandidate, absenceCandidate]
                 });
+                //pie chart setup end
 
-            });//end of clockIndata
-        });
+
+
+                //absent report setup start
+                //1. get master candidate list (phone and name)
+                var absenceList = [];
+                var retrievedData = localStorage.getItem("masterCandidate");
+                var masterCandidateList = JSON.parse(retrievedData);
+
+                obj = {};
+                for(let i of arrayClockIn){
+                    obj[i] = true;
+                }
+                arrayClockIn = Object.keys(obj);
+
+                //2. arrayClockIn has name list who attendace
+                var len = masterCandidateList.length;
+                for(var i = 0; i < len; i++){
+                    if(arrayClockIn.indexOf(masterCandidateList[i][0]) == -1 && masterCandidateList[i][3] == dropdownValue.options[dropdownValue.selectedIndex].text)
+                    {
+                        absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2] ]);
+                    }
+                }
+                
+                
+                //absent report setup end
+
+
+
+                //Detail report setup start
+                document.getElementById("absenceTitle").innerText= "Absence Name List For Company " + dropdownValue.options[dropdownValue.selectedIndex].text + " (" + startDate + " to " + endDate + ")";
+                document.getElementById("attendTitle").innerText= "Attendance Records Details For Company " + dropdownValue.options[dropdownValue.selectedIndex].text + " (" + startDate + " to " + endDate + ")";
+                $(document).ready(function () {
+                    $('#tableDetailReport').DataTable({
+                        //'searching': false,
+                        //'paging': false,
+                        //'ordering': false,
+                        //'info': false
+                        //"responsive": true,
+                        "destroy" : true,
+                        'data': arrayDetailReport,
+                        columns: [
+                            { title: "name" },
+                            { title: "ic" },
+                            { title: "date" },
+                            { title: "time" },
+                            { title: "location" },
+                            { title: "phone" },
+                            { title: "agent" },
+                            { title: "company" }
+                        ],
+                        'order': [[0, 'asc'], [2, 'asc']],
+                    });
+
+                    $('#tableAbsence').DataTable({
+                        //'searching': false,
+                        //'paging': false,
+                        //'ordering': false,
+                        //'info': false
+                        //"responsive": true,
+                        "destroy" : true,
+                        'data': absenceList,
+                        columns: [
+                            { title: "name" },
+                            { title: "ic" },
+                            { title: "phone" }
+                        ],
+                        'order': [[0, 'asc']],
+                    });
+
+                });
+
+                }, function (error) {
+                console.log("Error: " + error.code);
+                //Detail report setup end
+
+            });
+        });//end of clockIndata
 
         
 
