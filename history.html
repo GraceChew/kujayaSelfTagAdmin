@@ -109,20 +109,31 @@
                                     <p class="card-category">You can see the change history made by agents</p>
                                 </div>
                                 <div class="card-body table-full-width table-responsive ml-1">
-                                    <table id="tableHistory" class="table table-hover table-striped">
-                                        <thead>
-                                            <th data-field="id" data-sortable="true">Change By</th>
-                                            <th data-field="ic" data-sortable="true">Candidate IC</th>
-                                            <th data-field="item" data-sortable="true">Change Item</th>
-                                            <th data-field="from" data-sortable="true">Value From</th>
-                                            <th data-field="to" data-sortable="true">Value To</th>
-                                            <th data-field="date" data-sortable="true">Date</th>
-                                            <th data-field="time" data-sortable="true">Time</th>
-                                        </thead>
-                                        <tbody>
-                                            
-                                        </tbody>
-                                    </table>
+                                    <div class="row">
+                                        <div class="col-2 pr-0 pt-2 card-category">Changed From:</div>
+                                        <div class="col-4 pl-0"><input type="text" id="picker1" class="form-control"></div>
+                                        <div class="col-6"></div>
+                                        
+                                    </div> 
+                                    <div class="row">
+                                        <div class="col-2 pr-0 pt-2 card-category">To:</div>
+                                        <div class="col-4 pl-0 pt-1"><input type="text" id="picker2" class="form-control"></div>
+                                        <div class="col-6 pt-1"><button id="btn-refresh" type="button" class="btn btn-outline-primary">Refresh</button></div>
+                                    </div>
+                                        <table id="tableHistory" class="table table-hover table-striped mt-5 ml-1">
+                                            <thead>
+                                                <th data-field="id" data-sortable="true">Change By</th>
+                                                <th data-field="ic" data-sortable="true">Candidate IC</th>
+                                                <th data-field="item" data-sortable="true">Change Item</th>
+                                                <th data-field="from" data-sortable="true">Value From</th>
+                                                <th data-field="to" data-sortable="true">Value To</th>
+                                                <th data-field="date" data-sortable="true">Date</th>
+                                                <th data-field="time" data-sortable="true">Time</th>
+                                            </thead>
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -162,55 +173,77 @@
             }
         });
 
-        var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate");
-        
-        var test = [];
-        var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate");
-        dbhistory.on("value", function(snapshot) {
-                //console.log(snapshot.val());
-                var history = snapshot.val();
-                var keys = Object.keys(history);
-                //console.log(keys);
-
-                for(var i = 0; i < keys.length; i++){
-                    var k = keys[i];                
-                    test.push([history[k].changeBy, history[k].candidateIC, history[k].changeItem, history[k].valueFrom, history[k].valueTo, history[k].changeDate, history[k].changeTime]);                    
-                }
-                
-                $(document).ready(function () {
-                    $('#tableHistory').DataTable({
-                        //'searching': false,
-                        //'paging': false,
-                        //'ordering': false,
-                        //'info': false
-                        'data': test,
-                        columns: [
-                            { title: "id" },
-                            { title: "ic" },
-                            { title: "item" },
-                            { title: "from" },
-                            { title: "to" },
-                            { title: "date" },
-                            { title: "time" }
-                        ],
-                        'order': [[5, 'desc']],
-                    });
-
-                });
-
-                }, function (error) {
-                console.log("Error: " + error.code);
-            });
-
-            console.log(test.length);
-            for(var i = 0; i < test.length; i++) {
-                var cube = test[i];
-                for(var j = 0; j < cube.length; j++) {
-                    dataset.push(cube[i][j]);
-                }
+        $('#picker1').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            value: new Date(),
+            weeks: true,
+            onShow: function(ct){
+                this.setOptions({
+                    maxDate : $('#picker2').val() ? $('#picker2').val() : false
+                })
             }
+        });
+
+        $('#picker2').datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            value: new Date(),
+            weeks: true,
+            onShow: function(ct){
+                this.setOptions({
+                    minDate : $('#picker1').val() ? $('#picker1').val() : false
+                })
+            }
+        });
         
-       
+        $("#btn-refresh").click(function(){
+
+                var arrayHistory = [];
+                var startDate =  document.getElementById("picker1").value;
+                var endDate =  document.getElementById("picker2").value;
+                var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate").startAt(startDate).endAt(endDate);;
+                dbhistory.on("value", function(snapshot) {
+                        //console.log(snapshot.val());
+                        var history = snapshot.val();
+                        var keys = Object.keys(history);
+                        //console.log(keys);
+
+                        for(var i = 0; i < keys.length; i++){
+                            var k = keys[i];                
+                            arrayHistory.push([history[k].changeBy, history[k].candidateIC, history[k].changeItem, history[k].valueFrom, history[k].valueTo, history[k].changeDate, history[k].changeTime]);                    
+                        }
+                        
+                        $(document).ready(function () {
+                            $('#tableHistory').DataTable({
+                                //'searching': false,
+                                //'paging': false,
+                                //'ordering': false,
+                                //'info': false
+                                //"responsive": true,
+                                "destroy" : true,
+                                'data': arrayHistory,
+                                columns: [
+                                    { title: "id" },
+                                    { title: "ic" },
+                                    { title: "item" },
+                                    { title: "from" },
+                                    { title: "to" },
+                                    { title: "date" },
+                                    { title: "time" }
+                                ],
+                                'order': [[5, 'desc']],
+                            });
+
+                        });
+
+                        }, function (error) {
+                        console.log("Error: " + error.code);
+                    });
+            
+        });
         
      
         // var table = document.getElementById("tableHistory").getElementsByTagName('tbody')[0];
