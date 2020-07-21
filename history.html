@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard</title>
+    <title>History</title>
     <link rel="icon" type="image/png" href="images/kujaya.ico">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -23,6 +23,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.4.4/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="js/jquery.datatimepicker.full.min.js"></script>
+
+    
     
     <!-- table -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" />
@@ -38,6 +40,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.css">
+
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet">   
+
 
     <!-- firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
@@ -70,7 +76,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="bulkUpload.html">
                             <i class="nc-icon nc-cloud-upload-94"></i>
                             <p>Bulk Upload</p>
                         </a>
@@ -111,29 +117,33 @@
                                 <div class="card-body table-full-width table-responsive ml-1">
                                     <div class="row">
                                         <div class="col-2 pr-0 pt-2 card-category">Changed From:</div>
-                                        <div class="col-4 pl-0"><input type="text" id="picker1" class="form-control"></div>
+                                        <div class="col-4 pl-0"><input type="date" id="picker1" class="form-control" required></div>
                                         <div class="col-6"></div>
                                         
                                     </div> 
                                     <div class="row">
                                         <div class="col-2 pr-0 pt-2 card-category">To:</div>
-                                        <div class="col-4 pl-0 pt-1"><input type="text" id="picker2" class="form-control"></div>
-                                        <div class="col-6 pt-1"><button id="btn-refresh" type="button" class="btn btn-outline-primary">Refresh</button></div>
+                                        <div class="col-4 pl-0 pt-1"><input type="date" id="picker2" class="form-control" required></div>
+                                        <div class="col-6 pt-1 mb-10"><button id="btn-refresh" type="button" class="btn btn-outline-primary">Refresh</button></div>
                                     </div>
-                                        <table id="tableHistory" class="table table-hover table-striped mt-5 ml-1">
-                                            <thead>
-                                                <th data-field="id" data-sortable="true">Change By</th>
-                                                <th data-field="ic" data-sortable="true">Candidate IC</th>
-                                                <th data-field="item" data-sortable="true">Change Item</th>
-                                                <th data-field="from" data-sortable="true">Value From</th>
-                                                <th data-field="to" data-sortable="true">Value To</th>
-                                                <th data-field="date" data-sortable="true">Date</th>
-                                                <th data-field="time" data-sortable="true">Time</th>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-12" style="padding-top: 10px;" >
+                                            <table id="tableHistory" class="table table-hover table-striped" style="padding: 0px; margin: 0px;">
+                                                <thead>
+                                                    <th data-field="id" data-sortable="true">Change By</th>
+                                                    <th data-field="ic" data-sortable="true">Candidate IC</th>
+                                                    <th data-field="item" data-sortable="true">Change Item</th>
+                                                    <th data-field="from" data-sortable="true">Value From</th>
+                                                    <th data-field="to" data-sortable="true">Value To</th>
+                                                    <th data-field="date" data-sortable="true">Date</th>
+                                                    <th data-field="time" data-sortable="true">Time</th>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +174,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js"></script>>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>>
+
+    
     <script src="js/index.js"></script>
     <script>
         
@@ -173,37 +193,42 @@
             }
         });
 
-        $('#picker1').datetimepicker({
-            timepicker: false,
-            datepicker: true,
-            format: 'Y-m-d',
-            value: new Date(),
-            weeks: true,
-            onShow: function(ct){
-                this.setOptions({
-                    maxDate : $('#picker2').val() ? $('#picker2').val() : false
-                })
-            }
-        });
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
 
-        $('#picker2').datetimepicker({
-            timepicker: false,
-            datepicker: true,
-            format: 'Y-m-d',
-            value: new Date(),
-            weeks: true,
-            onShow: function(ct){
-                this.setOptions({
-                    minDate : $('#picker1').val() ? $('#picker1').val() : false
-                })
-            }
-        });
+        if(dd<10) {
+            dd = '0'+dd
+        } 
+
+        if(mm<10) {
+            mm = '0'+mm
+        }
+        document.getElementById("picker1").defaultValue  = yyyy + "-"  + mm + "-" + dd;
+        document.getElementById("picker2").defaultValue  = yyyy + "-"  + mm + "-" + dd;
         
         $("#btn-refresh").click(function(){
 
                 var arrayHistory = [];
                 var startDate =  document.getElementById("picker1").value;
                 var endDate =  document.getElementById("picker2").value;
+
+                if(startDate == ""){
+                    alert("select date for Change from");
+                    document.getElementById("picker1").focus();
+                    return;
+                }
+                else if(endDate == ""){
+                    alert("select end date");
+                    document.getElementById("picker2").focus();
+                    return;
+                }
+                else if (endDate < startDate){
+                    alert("end date cannot earlier than start date");
+                    document.getElementById("picker2").focus();
+                    return;
+                }
                 var dbhistory = firebase.database().ref().child("CandidateHistory").orderByChild("changeDate").startAt(startDate).endAt(endDate);;
                 dbhistory.on("value", function(snapshot) {
                         //console.log(snapshot.val());
@@ -216,13 +241,13 @@
                             arrayHistory.push([history[k].changeBy, history[k].candidateIC, history[k].changeItem, history[k].valueFrom, history[k].valueTo, history[k].changeDate, history[k].changeTime]);                    
                         }
                         
-                        $(document).ready(function () {
+                        // $(document).ready(function () {
                             $('#tableHistory').DataTable({
                                 //'searching': false,
                                 //'paging': false,
                                 //'ordering': false,
                                 //'info': false
-                                //"responsive": true,
+                                "responsive": true,
                                 "destroy" : true,
                                 'data': arrayHistory,
                                 columns: [
@@ -235,9 +260,16 @@
                                     { title: "time" }
                                 ],
                                 'order': [[5, 'desc']],
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    'copyHtml5',
+                                    'excelHtml5',
+                                
+                                    'pdfHtml5'
+                                ]
                             });
 
-                        });
+                        // });
 
                         }, function (error) {
                         console.log("Error: " + error.code);
@@ -284,6 +316,35 @@
         //         }, function (error) {
         //         console.log("Error: " + error.code);
         //     });
+
+
+                
+
+        // $('#picker1').datetimepicker({
+        //     timepicker: false,
+        //     datepicker: true,
+        //     format: 'Y-m-d',
+        //     value: new Date(),
+        //     weeks: true,
+        //     onShow: function(ct){
+        //         this.setOptions({
+        //             maxDate : $('#picker2').val() ? $('#picker2').val() : false
+        //         })
+        //     }
+        // });
+
+        // $('#picker2').datetimepicker({
+        //     timepicker: false,
+        //     datepicker: true,
+        //     format: 'Y-m-d',
+        //     value: new Date(),
+        //     weeks: true,
+        //     onShow: function(ct){
+        //         this.setOptions({
+        //             minDate : $('#picker1').val() ? $('#picker1').val() : false
+        //         })
+        //     }
+        // });
             
     </script>
 
