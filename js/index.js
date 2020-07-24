@@ -75,7 +75,8 @@ var firebaseConfig = {
       "candidateAgent": agent,
       "candidateCompany": company,
       "candidatePhone": phone,
-      "candidateTransport": transport
+      "candidateTransport": transport,
+      "candidateStatus": "ACTIVE"
     }
 
     rootRef.push(candidate, function(error){
