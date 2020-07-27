@@ -98,9 +98,9 @@
                                             <div class="col-12" style="padding-top: 10px;" >
                                                 <table id="tableCandidate" class="table table-hover table-striped" style="padding: 0px; margin: 0px;">
                                                     <thead>
+                                                        <th data-field="candidateAgent" data-sortable="true">Agent</th>
                                                         <th data-field="candidateName" data-sortable="true">Name</th>
                                                         <th data-field="candidateIc" data-sortable="true">Ic</th>
-                                                        <th data-field="candidateAgent" data-sortable="true">Agent</th>
                                                         <th data-field="candidateCompany" data-sortable="true">Company</th>
                                                         <th data-field="candidatePhone" data-sortable="true">Phone</th>
                                                         <th data-field="candidateTransport" data-sortable="true">Transport</th>
@@ -147,7 +147,7 @@
                             if(candidates[k].candidateIc == undefined){
                                 candidates[k].candidateIc == "-";
                             }             
-                            arrayCandidate.push([candidates[k].candidateName, candidates[k].candidateIc, candidates[k].candidateAgent, candidates[k].candidateCompany, candidates[k].candidatePhone, candidates[k].candidateTransport]);
+                            arrayCandidate.push(candidates[k].candidateAgent, [candidates[k].candidateName, candidates[k].candidateIc, candidates[k].candidateCompany, candidates[k].candidatePhone, candidates[k].candidateTransport]);
                         }
 
                         document.getElementById("progressBar").style.visibility = "hidden";
@@ -162,9 +162,9 @@
                                 "destroy" : true,
                                 'data': arrayCandidate,
                                 columns: [
+                                    { title: "candidateAgent" },
                                     { title: "candidateName" },
                                     { title: "candidateIc" },
-                                    { title: "candidateAgent" },
                                     { title: "candidateCompany" },
                                     { title: "candidatePhone" },
                                     { title: "candidateTransport" }
