@@ -160,6 +160,7 @@
                                             <th data-field="name" data-sortable="true">Name</th>
                                             <th data-field="ic" data-sortable="true">IC</th>
                                             <th data-field="phone" data-sortable="true">Phone</th>
+                                            <th data-field="agent" data-sortable="true">Agent</th>
                                         </thead>
                                         <tbody>
                                             
@@ -220,6 +221,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.js"></script>>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/notiflix@2.2.0/dist/notiflix-2.2.0.min.js"></script>
+
+    
     <script src="js/index.js"></script>
     <script>
         $('.dropdown-toggle').dropdown();
@@ -271,7 +274,8 @@
             var arraysAllCompany = [];
             var arraysCandidateNameICPhone = [];
             
-           for(var i = 0; i < keys.length; i++){
+            var keyLength = keys.length;
+           for(var i = 0; i < keyLength; i++){
                     var k = keys[i];
                     arraysAllCompany.push(masterCandidate[k].candidateCompany);    
                     // if(!arrays.includes(masterCandidate[k].candidateCompany)){
@@ -282,7 +286,8 @@
                     arraysCandidateNameICPhone.push([masterCandidate[k].candidateName, 
                                                      masterCandidate[k].candidateIc, 
                                                      masterCandidate[k].candidatePhone,
-                                                     masterCandidate[k].candidateCompany]);                   
+                                                     masterCandidate[k].candidateCompany,
+                                                     masterCandidate[k].candidateAgent]);                   
             }
             //name local storage to masterCandidate
             localStorage.setItem("masterCandidate", JSON.stringify(arraysCandidateNameICPhone));
@@ -403,7 +408,7 @@
                 for(var i = 0; i < len; i++){
                     if(arrayClockIn.indexOf(masterCandidateList[i][0]) == -1 && masterCandidateList[i][3] == dropdownValue.options[dropdownValue.selectedIndex].text)
                     {
-                        absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2] ]);
+                        absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2], masterCandidateList[i][4] ]);
                     }
                 }
                 
@@ -448,9 +453,16 @@
                         columns: [
                             { title: "name" },
                             { title: "ic" },
-                            { title: "phone" }
+                            { title: "phone" },
+                            { title: "agent" }
                         ],
                         'order': [[0, 'asc']],
+                        // dom: 'Bfrtip',
+                        // buttons: [
+                        //     'copyHtml5',
+                        //     'excelHtml5',       
+                        //     'pdfHtml5'
+                        //         ]
                     });
 
                 });
