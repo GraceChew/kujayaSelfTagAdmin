@@ -74,7 +74,7 @@
                     <li>
                         <a class="nav-link" href="masterCandidate.html">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Master Candidate</p>
+                            <p>Candidate history</p>
                         </a>
                     </li>
                     <li>
@@ -297,7 +297,23 @@
             let count = 1;
             let letters = [];
             arraysAllCompany.sort();
-            for(let i = 0; i < arraysAllCompany.length; i++){
+            var len = arraysAllCompany.length;
+
+            // var x = document.getElementById("companySelect");
+            // var option = document.createElement("option");
+            // option.text = "ALL";
+            // option.value = len;
+            // x.add(option); 
+
+            for(let i = 0; i < len; i++){
+                
+                if(i==0){
+                    var x = document.getElementById("companySelect");
+                    var option = document.createElement("option");
+                    option.text = "ALL";
+                    option.value = len;
+                    x.add(option);  
+                }
                 if(arraysAllCompany[i] === arraysAllCompany[i+1]){
                     count++;
                 }
@@ -339,7 +355,18 @@
                 var keys = Object.keys(clockInFromFirebase);
                 for(var i = 0; i < keys.length; i++){
                     var k = keys[i];
-                    if(clockInFromFirebase[k].company == dropdownValue.options[dropdownValue.selectedIndex].text){
+                    if(dropdownValue.options[dropdownValue.selectedIndex].text == "ALL"){
+                        arrayClockIn.push(clockInFromFirebase[k].name);
+                        arrayDetailReport.push([clockInFromFirebase[k].name,
+                                                clockInFromFirebase[k].ic,
+                                                clockInFromFirebase[k].date,
+                                                clockInFromFirebase[k].time,
+                                                clockInFromFirebase[k].location,
+                                                clockInFromFirebase[k].phone,
+                                                clockInFromFirebase[k].agent,
+                                                clockInFromFirebase[k].company ]);
+                    }
+                    else if(clockInFromFirebase[k].company == dropdownValue.options[dropdownValue.selectedIndex].text){
                         arrayClockIn.push(clockInFromFirebase[k].name);
                         arrayDetailReport.push([clockInFromFirebase[k].name,
                                                 clockInFromFirebase[k].ic,
@@ -406,9 +433,14 @@
                 //2. arrayClockIn has name list who attendace
                 var len = masterCandidateList.length;
                 for(var i = 0; i < len; i++){
-                    if(arrayClockIn.indexOf(masterCandidateList[i][0]) == -1 && masterCandidateList[i][3] == dropdownValue.options[dropdownValue.selectedIndex].text)
+                    if(arrayClockIn.indexOf(masterCandidateList[i][0]) == -1)
                     {
-                        absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2], masterCandidateList[i][4] ]);
+                        if(dropdownValue.options[dropdownValue.selectedIndex].text == "ALL"){
+                            absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2], masterCandidateList[i][4] ]);
+                        }
+                        else if(masterCandidateList[i][3] == dropdownValue.options[dropdownValue.selectedIndex].text){
+                            absenceList.push( [ masterCandidateList[i][0], masterCandidateList[i][1], masterCandidateList[i][2], masterCandidateList[i][4] ]);
+                        }
                     }
                 }
                 
