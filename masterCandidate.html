@@ -135,7 +135,7 @@
             });
 
             var arrayCandidate = [];
-            var dbCandidate = firebase.database().ref().child("candidates").orderByChild("candidateStatus").equalTo("ACTIVE");
+            var dbCandidate = firebase.database().ref().child("candidates").orderByChild("candidateStatus");
                 dbCandidate.on("value", function(snapshot) {
                         //console.log(snapshot.val());
                         var candidates = snapshot.val();
