@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Bulk Delete Candidate</title>
+        <link rel="icon" type="image/png" href="images/kujaya.ico">
+        <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+        <link href="css/light-bootstrap-dashboard.css?v=2.0.0" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+            
+        
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
+        <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css" rel="stylesheet">   
+    </head>
+    
+    <body>
+        <div class="wrapper">
+            <div class="sidebar" data-image="images/sidebar-4.jpg">
+                <div class="sidebar-wrapper">
+                    <div class="logo">
+                        <img src="images/kujaya.png" alt="kujaya logo" style="width:20%" />
+                        Kujaya Self Tag
+                    </div>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="mainPage_new.html">
+                                <i class="nc-icon nc-chart-pie-35"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#">
+                                <i class="nc-icon nc-circle-09"></i>
+                                <p>Candidate history</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="bulkUpload.html">
+                                <i class="nc-icon nc-cloud-upload-94"></i>
+                                <p>Bulk Upload</p>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a class="nav-link" href="bulkDelete.html">
+                                <i class="nc-icon nc-simple-remove"></i>
+                                <p>Bulk Delete</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="Logout" class="nav-link" href="javascript: isLogout()">
+                                <i class="nc-icon nc-button-power"></i>
+                                <p>Logout</p>
+                            </a>
+                        </li>
+    
+                        <!--<li class="nav-item active active-pro">
+                        <a class="nav-link active" href="upgrade.html">
+                            <i class="nc-icon nc-alien-33"></i>
+                            <p>Upgrade to PRO</p>
+                        </a>
+                    </li>-->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-panel">
+                <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#pablo"> Bulk Delete Candidate </a>
+                    </div>
+                </nav>
+
+                <div class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <!-- <h4 class="card-title"> </h4> -->
+                                        <p class="card-category" style="color: black;margin-top: 5px;">
+                                            1. <mark><img src="images/warning20.png">Cautious: You cannot undo it once the data is delete from database! </mark>
+                                            <br><br>
+                                            2. <mark>Delete candidate will not affect previous clock in record.</mark>
+                                         </p>
+                                        <!-- <p class="card-category">title description</p> -->
+                                    </div>
+                                    <br>
+                                    <div class="card-body">
+                                        <!-- dropdown list to select master candidate attribute -->
+                                        <div class="row">
+                                            <div class="col-2 pr-0 pt-2 card-category">Select Searching Criteria:</div>
+                                            <div class="col-4 pl-0 pt-2">    
+                                                <div class="input-group mb-3">
+                                                    <select class="custom-select" id="attributeSelect">
+                                                        <option value="candidateAgent">Agent</option>
+                                                        <option value="candidateName">Candidate Name</option>
+                                                        <option value="candidateIc">IC</option>
+                                                        <option value="candidateCompany">Company</option>
+                                                        <option value="candidatePhone">Phone</option>
+                                                        <option value="candidateStatus">Status</option>
+                                                    </select>
+                                                  </div>
+                                            </div>   
+                                        </div>
+                                         <!-- input the value that want to filter -->
+                                        <div class="row">
+                                            <div class="col-2 pr-0 pt-2 card-category">Searching Value:</div>
+                                            <div class="col-4 pl-0 pt-2">    
+                                                <div class="form-wrapper">
+                                                    <input id="search_value" type="text" placeholder="Example type ABC will list out candidate for Agent ABC" class="form-control" />
+                                                </div>
+                                            </div> 
+                                            <div class="col-6 pt-1"><button id="btn-search" type="button" class="btn btn-outline-primary">Search</button></div>  
+                                        </div>
+
+                                       <!-- here the table to list out the result -->
+                                        <div class="row">
+                                            <div class="col-12 pt-1"><button id="btn-delete" type="button" class="btn btn-danger float-right invisible">Delete</button></div>  
+                                            <div class="col-12" style="padding-top: 10px;" >
+                                                <hr style="margin: 10px 0px;">
+                                                <table id="tableCandidate" class="table table-hover table-striped" style="padding: 0px; margin: 0px;">
+                                                    <thead>
+                                                        <th data-field="candidateAgent" data-sortable="true">Agent</th>
+                                                        <th data-field="candidateName" data-sortable="true">Name</th>
+                                                        <th data-field="candidateIc" data-sortable="true">Ic</th>
+                                                        <th data-field="candidateCompany" data-sortable="true">Company</th>
+                                                        <th data-field="candidatePhone" data-sortable="true">Phone</th>
+                                                        <th data-field="UID" data-sortable="true" >UID</th>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-12 pt-1"><button id="btn-delete1" type="button" class="btn btn-danger float-right invisible">Delete</button></div>  
+                                        </div>
+                                        
+
+                                        
+
+                                        <!-- A button to delete all the result -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>>
+        <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>>
+        <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>>
+        <script src="js/index.js"></script>
+        <script>
+            firebase.auth().onAuthStateChanged(function(user){
+                if(!user){
+                    window.location.href = "signin.html";
+                }
+            });
+
+             document.getElementById('btn-delete').addEventListener("click", (event)=>{
+
+                var len = document.getElementById("tableCandidate").rows.length;
+                if(confirm("Are you sure? Total record " + (len - 1) + " will be delete and cannot undone!")){
+                    var table = document.getElementById("tableCandidate");
+                    for (var i = 1; row = table.rows[i]; i++) {
+                        console.log(row.cells[5].innerHTML);  
+                        // deleteFromFirebase(row.cells[5].innerHTML);    
+                        var rootRef = firebase.database().ref().child("candidates");
+                        rootRef.child(row.cells[5].innerHTML).remove();
+                    
+
+                        var x = document.getElementById("tableCandidate").rows[i].cells;
+                        x[5].innerHTML += "<br> DELETED";
+                        x[5].style.color = "green";
+                        x[5].style.fontWeight = "bold";
+                    }
+
+                    alert("Record is deleted successfully");
+                    var buttonDelete = document.getElementById("btn-delete");
+                    var buttonDelete1 = document.getElementById("btn-delete1");
+                    buttonDelete.classList.add("invisible");
+                    buttonDelete1.classList.add("invisible");
+
+                }
+             });
+             
+             document.getElementById('btn-delete1').addEventListener("click", (event)=>{
+                 if(confirm("Are you sure?")){
+
+                 }
+
+             });
+
+             document.getElementById('btn-search').addEventListener("click", (event)=>{
+
+                var searchValue = document.getElementById("search_value").value.toUpperCase();
+                if(!searchValue){
+                    alert("search value cannot be null");
+                    document.getElementById("search_value").focus();
+                    return;
+                }
+
+                var dropdownValue = document.getElementById("attributeSelect");
+                var attribute = dropdownValue.options[dropdownValue.selectedIndex].value;
+                var arrayCandidate = [];
+                var dbCandidate = firebase.database().ref().child("candidates").orderByChild(attribute).startAt(searchValue).endAt(searchValue+"\uf8ff");
+                dbCandidate.on("value", function(snapshot) {
+                    var candidates = snapshot.val();
+
+                    if(candidates != undefined){
+                    
+                        var keys = Object.keys(candidates);
+                        var len = keys.length;
+                        
+                        for(var i = 0; i < len; i++){
+                            var k = keys[i];   
+                            if(candidates[k].candidateIc == undefined){
+                                candidates[k].candidateIc = "-";
+                            }             
+                            arrayCandidate.push([candidates[k].candidateAgent, candidates[k].candidateName, candidates[k].candidateIc, candidates[k].candidateCompany, candidates[k].candidatePhone, k]);
+                        }
+                    }
+                    
+
+
+                     $('#tableCandidate').DataTable({
+                                //'searching': false,
+                                'paging': false,
+                                //'ordering': false,
+                                //'info': false
+                                'responsive': true,
+                                'destroy' : true,
+                                'data': arrayCandidate,
+                                columns: [
+                                    { title: "candidateAgent" },
+                                    { title: "candidateName" },
+                                    { title: "candidateIc" },
+                                    { title: "candidateCompany" },
+                                    { title: "candidatePhone" },
+                                    { title: "UID" }
+                                ],
+                                'order': [[0, 'asc']],
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    'copyHtml5',
+                                    'excelHtml5',
+                                    'pdfHtml5'
+                                ]
+                            });
+
+                        var buttonDelete = document.getElementById("btn-delete");
+                        var buttonDelete1 = document.getElementById("btn-delete1");
+                        buttonDelete.classList.remove("invisible");
+                        buttonDelete1.classList.remove("invisible");
+
+                     });
+             });
+
+            
+
+             
+        </script>
+    </body>
+</html>
