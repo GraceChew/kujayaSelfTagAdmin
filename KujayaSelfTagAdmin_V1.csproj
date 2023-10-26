@@ -1,0 +1,133 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{9D7538B8-D38B-4509-8534-2E5D1039FF31}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ConsoleApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>KujayaSelfTagAdmin_V1</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="addCandidate.html" />
+    <Content Include="bulkDelete.html" />
+    <Content Include="bulkUpload.html" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\jquery.datetimepicker.css" />
+    <Content Include="css\light-bootstrap-dashboard.css" />
+    <Content Include="css\style.css" />
+    <Content Include="fonts\nucleo-icons.svg" />
+    <Content Include="history.html" />
+    <Content Include="images\excel-xls-icon-2.png" />
+    <Content Include="images\excel.png" />
+    <Content Include="images\kujaya.ico" />
+    <Content Include="images\kujaya.png" />
+    <Content Include="images\sidebar-4.jpg" />
+    <Content Include="images\warning20.png" />
+    <Content Include="index.js" />
+    <Content Include="jquery.datatimepicker.full.min.js" />
+    <Content Include="js\index.js" />
+    <Content Include="js\jquery.datatimepicker.full.min.js" />
+    <Content Include="js\light-bootstrap-dashboard.js" />
+    <Content Include="js\plugins\bootstrap-datepicker.js" />
+    <Content Include="js\plugins\bootstrap-notify.js" />
+    <Content Include="js\plugins\bootstrap-switch.js" />
+    <Content Include="js\plugins\chartist.min.js" />
+    <Content Include="js\plugins\nouislider.min.js" />
+    <Content Include="light-bootstrap-dashboard.js" />
+    <Content Include="mainPage_new.html" />
+    <Content Include="masterCandidate.html" />
+    <Content Include="signin.html" />
+    <Content Include="signup.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".git\config" />
+    <None Include=".git\description" />
+    <None Include=".git\HEAD" />
+    <None Include=".git\hooks\applypatch-msg.sample" />
+    <None Include=".git\hooks\commit-msg.sample" />
+    <None Include=".git\hooks\fsmonitor-watchman.sample" />
+    <None Include=".git\hooks\post-update.sample" />
+    <None Include=".git\hooks\pre-applypatch.sample" />
+    <None Include=".git\hooks\pre-commit.sample" />
+    <None Include=".git\hooks\pre-merge-commit.sample" />
+    <None Include=".git\hooks\pre-push.sample" />
+    <None Include=".git\hooks\pre-rebase.sample" />
+    <None Include=".git\hooks\pre-receive.sample" />
+    <None Include=".git\hooks\prepare-commit-msg.sample" />
+    <None Include=".git\hooks\push-to-checkout.sample" />
+    <None Include=".git\hooks\sendemail-validate.sample" />
+    <None Include=".git\hooks\update.sample" />
+    <None Include=".git\index" />
+    <None Include=".git\info\exclude" />
+    <None Include=".git\logs\HEAD" />
+    <None Include=".git\logs\refs\heads\master" />
+    <None Include=".git\logs\refs\remotes\origin\HEAD" />
+    <None Include=".git\objects\pack\pack-8974be7eb8b670a07a32bbecb26b3093d892e0d7.idx" />
+    <None Include=".git\objects\pack\pack-8974be7eb8b670a07a32bbecb26b3093d892e0d7.pack" />
+    <None Include=".git\objects\pack\pack-8974be7eb8b670a07a32bbecb26b3093d892e0d7.rev" />
+    <None Include=".git\packed-refs" />
+    <None Include=".git\refs\heads\master" />
+    <None Include=".git\refs\remotes\origin\HEAD" />
+    <None Include=".vs\kujayaSelfTagAdmin\FileContentIndex\563f94d4-d266-4963-a95b-a5b16b7d69f8.vsidx" />
+    <None Include=".vs\kujayaSelfTagAdmin\v17\.wsuo" />
+    <None Include=".vs\kujayaSelfTagAdmin\v17\Browse.VC.db" />
+    <None Include=".vs\ProjectSettings.json" />
+    <None Include=".vs\slnx.sqlite" />
+    <None Include=".vs\VSWorkspaceState.json" />
+    <None Include="CANDIDATE TEMPLATE.xlsx" />
+    <None Include="css\style.css.map" />
+    <None Include="css\style.scss" />
+    <None Include="fonts\new" />
+    <None Include="fonts\nucleo-icons.eot" />
+    <None Include="fonts\nucleo-icons.ttf" />
+    <None Include="fonts\nucleo-icons.woff" />
+    <None Include="fonts\nucleo-icons.woff2" />
+    <None Include="fonts\poppins\Poppins-Regular.ttf" />
+    <None Include="fonts\poppins\Poppins-SemiBold.ttf" />
+    <None Include="js\js" />
+    <None Include="js\plugins\sd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".git\objects\info\" />
+    <Folder Include=".git\refs\tags\" />
+    <Folder Include=".vs\KujayaSelfTagAdmin_V1\v17\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
