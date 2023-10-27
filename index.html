@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="icon" type="image/png" href="images/kujaya.ico">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
+            
+            
+            <!-- MATERIAL DESIGN ICONIC FONT -->
+        <link rel="stylesheet" href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
+                
+                <!-- STYLE CSS -->
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+
+
+    </head>
+    
+    <body>
+        <div class="wrapper aqua-gradient" >
+            <div class="inner">
+                
+                <form action="">
+                    
+                    <div class="image-holder">
+                        <img src="https://kujayagroup.com.my/images/logo_dark.png" />
+                        <h3 style="margin: 30px 0px;">Self Tag - Admin Site</h3>
+                    </div>
+                    <h3>Login</h3>
+                    
+                    <div class="form-wrapper">
+                        <input id="phone" type="number" placeholder="Phone" class="form-control" />
+                        <i class="zmdi zmdi-phone"></i>
+                    </div>
+                    <!-- <div class="form-wrapper">
+                        <input id="password" type="password" placeholder="Password" class="form-control" />
+                        <i class="zmdi zmdi-lock"></i>
+                    </div> -->
+                    <div class="form-group container-login100-form-btn">
+                        <button id="btn-login" type="button" onclick="javascript:isLogin();">
+                            Login
+                            <i class="zmdi zmdi-arrow-right"></i>
+                        </button>
+                    </div>
+        
+                    <!-- <div class="w-full text-center p-t-27 p-b-239" style="margin-top: 20%; font-size: 15px;;">
+                        <span class="text-muted">
+                            Forgot
+                        </span>
+                        <a href="forgetPassword.html" class="text-dark">Username / password</a>"
+                    </div> -->
+
+                    <div class="w-full text-center" style="margin-top: 10%; font-size: 15px;">
+                        <p class="text-dark">If you don't have an account, please check with admin.</a>
+                    </div>
+                </form>
+            </div>
+        </div> 
+
+        <script src="js/index.js"></script>
+        <script>
+            firebase.auth().onAuthStateChanged(function(user){
+                if(user){
+                    window.location.href = "mainPage_new.html";
+                }
+            });
+
+            $(document).ready(function() {
+                $('#phone').keydown(function(e) {
+
+                    if (e.which === 13) {
+                        document.getElementById("btn-login").click();
+                        
+                    return false;
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

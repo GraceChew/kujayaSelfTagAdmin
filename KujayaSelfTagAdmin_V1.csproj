@@ -70,7 +70,7 @@
     <Content Include="light-bootstrap-dashboard.js" />
     <Content Include="mainPage_new.html" />
     <Content Include="masterCandidate.html" />
-    <Content Include="signin.html" />
+    <Content Include="index.html" />
     <Content Include="signup.html" />
   </ItemGroup>
   <ItemGroup>
